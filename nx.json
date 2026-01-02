@@ -5,6 +5,14 @@
     "production": ["default"],
     "sharedGlobals": []
   },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": []
+      }
+    }
+  },
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
