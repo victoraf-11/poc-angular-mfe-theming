@@ -1,169 +1,169 @@
-# Experimentos de la PoC — Theming en Microfrontends Angular
+# Proof-of-Concept Experiments — Theming in Angular Microfrontends
 
-Este documento define **de forma explícita y no ambigua** los experimentos técnicos que componen la PoC. Su función es evitar interpretaciones libres, contaminación entre enfoques y conclusiones basadas en impresiones subjetivas.
+This document explicitly and unambiguously defines the technical experiments that make up the PoC. Its purpose is to avoid loose interpretations, cross-contamination between approaches, and conclusions based on subjective impressions.
 
-Cada experimento representa **una hipótesis arquitectónica independiente**, aislada en su propia rama del repositorio.
-
----
-
-## Reglas generales (aplican a todos los experimentos)
-
-Estas reglas son **no negociables**:
-
-1. Cada experimento vive en una rama independiente derivada de `main`.
-2. En cada rama se modifica **únicamente** lo necesario para validar la hipótesis.
-3. No se introducen hacks, overrides globales ni soluciones ad-hoc.
-4. No se persigue coherencia visual perfecta.
-5. El código existe para **evidenciar acoplamientos**, no para ocultarlos.
-
-Si un experimento requiere “trucos” para funcionar, ese hecho **es parte del resultado**, no algo a corregir.
+Each experiment represents an independent architectural hypothesis, isolated in its own repository branch.
 
 ---
 
-## Experimento 1 — Theme centralizado en el host
+## General rules (apply to all experiments)
 
-### Hipótesis evaluada
+These rules are non-negotiable:
 
-> Centralizar el theme de Angular Material en el host permite consistencia visual sin introducir acoplamiento estructural significativo entre host y microfrontends.
+1. Each experiment lives on an independent branch derived from `main`.
+2. In each branch, modify only what is strictly necessary to validate the hypothesis.
+3. Do not introduce hacks, global overrides, or ad-hoc solutions.
+4. Do not pursue perfect visual coherence.
+5. Code exists to expose couplings, not to hide them.
 
-Este experimento **no asume que la hipótesis sea correcta**; su objetivo es tensionarla.
-
-### Cambios permitidos respecto a `main`
-
-* El host:
-
-  * Instala Angular Material.
-  * Define y compila un theme completo de Angular Material.
-  * Publica el CSS del theme de forma global.
-
-* Los microfrontends:
-
-  * Usan componentes Angular Material.
-  * **No** definen ningún theme propio.
-
-### Cambios explícitamente prohibidos
-
-* Duplicar estilos del host en los MF.
-* Overrides locales para corregir estilos.
-* Uso de variables CSS como “puente” informal.
-* Sincronizar versiones de Material por conveniencia.
-
-### Experimentos a provocar
-
-1. Cambiar el color primario del theme en el host.
-2. Actualizar Angular Material en el host sin tocar los MF.
-3. Intentar actualizar Angular Material en un MF de forma independiente.
-
-### Observaciones obligatorias
-
-Se debe documentar explícitamente:
-
-* Qué dependencias implícitas aparecen entre host y MF.
-* Qué rompe el build y por qué.
-* Qué cambios fuerzan coordinación entre equipos.
-* Dónde reside realmente la autoridad del diseño.
-
-### Señales de fallo arquitectónico
-
-* El MF no puede renderizar Material sin el CSS del host.
-* Cambios visuales del host rompen MF sin cambios de código.
-* Versionar Material de forma independiente resulta inviable.
+If an experiment requires “tricks” to work, that fact is part of the result, not something to fix.
 
 ---
 
-## Experimento 2 — Theme definido por cada microfrontend
+## Experiment 1 — Host-centralized theme
 
-### Hipótesis evaluada
+### Hypothesis under test
 
-> Permitir que cada microfrontend defina su propio theme de Angular Material maximiza la autonomía sin introducir conflictos técnicos relevantes.
+Centralizing the Angular Material theme in the host enables visual consistency without introducing significant structural coupling between the host and the microfrontends.
 
-### Cambios permitidos respecto a `main`
+This experiment does not assume the hypothesis is correct; its goal is to stress it.
 
-* Cada microfrontend:
+### Allowed changes relative to `main`
 
-  * Instala Angular Material.
-  * Define y compila su propio theme.
+- The host:
 
-* El host:
+  - Installs Angular Material.
+  - Defines and compiles a complete Angular Material theme.
+  - Publishes the theme CSS globally.
 
-  * No define estilos de Angular Material.
-  * No publica CSS relacionado con theming.
+- The microfrontends:
 
-### Cambios explícitamente prohibidos
+  - Use Angular Material components.
+  - Do not define any theme of their own.
 
-* Compartir CSS de Material entre MF.
-* Centralizar decisiones visuales en el host.
-* Forzar consistencia visual artificial.
+### Explicitly prohibited changes
 
-### Experimentos a provocar
+- Duplicating host styles in the MFs.
+- Local overrides to patch styles.
+- Using CSS variables as an informal “bridge.”
+- Synchronizing Material versions out of convenience.
 
-1. Usar distintas versiones de Angular Material entre MF (si es viable).
-2. Modificar el theme de un MF sin tocar el otro.
-3. Introducir estilos globales mínimos (body, typography) y observar conflictos.
+### Experiments to perform
 
-### Observaciones obligatorias
+1. Change the host theme primary color.
+2. Update Angular Material in the host without touching the MFs.
+3. Try to update Angular Material inside an MF independently.
 
-* Grado real de aislamiento entre builds.
-* Conflictos de estilos globales.
-* Impacto en experiencia de usuario (aunque no sea criterio de éxito).
+### Required observations
 
-### Señales de fallo arquitectónico
+Document explicitly:
 
-* Colisiones globales inevitables.
-* Necesidad de coordinación para cambios locales.
+- Which implicit dependencies appear between host and MFs.
+- What breaks the build and why.
+- Which changes force coordination between teams.
+- Where the actual authority over design lives.
 
----
+### Architectural failure signals
 
-## Experimento 3 — Design tokens compartidos + theme local
-
-### Hipótesis evaluada
-
-> Compartir design tokens versionados, manteniendo la compilación local del theme de Angular Material, permite consistencia visual sin sacrificar la autonomía de los microfrontends.
-
-### Cambios permitidos respecto a `main`
-
-* Se introduce `packages/tokens` como fuente única de decisiones de diseño.
-
-* Los microfrontends:
-
-  * Importan tokens.
-  * Compilan localmente su theme Material usando dichos tokens.
-
-* El host:
-
-  * No define ni distribuye themes.
-
-### Cambios explícitamente prohibidos
-
-* Incluir Angular Material dentro de `tokens`.
-* Exponer CSS compilado desde `tokens`.
-* Importar tokens directamente en el host para estilos Material.
-
-### Experimentos a provocar
-
-1. Crear una versión inicial de tokens (v1).
-2. Crear una versión incompatible de tokens (v2).
-3. Migrar MF-A a v2 manteniendo MF-B en v1.
-
-### Observaciones obligatorias
-
-* Dónde se manifiesta el acoplamiento.
-* Si el acoplamiento es técnico o contractual.
-* Impacto en versionado y despliegue independiente.
-
-### Señales de fallo arquitectónico
-
-* Los MF dejan de ser compilables sin sincronización.
-* Los tokens actúan como una shared lib encubierta.
+- An MF cannot render Material without the host CSS.
+- Visual changes in the host break MFs without code changes.
+- Versioning Material independently proves infeasible.
 
 ---
 
-## Comparativa y cierre
+## Experiment 2 — Theme defined per microfrontend
 
-Al finalizar los tres experimentos se debe elaborar un análisis comparativo que responda, de forma explícita:
+### Hypothesis under test
 
-* Qué estrategia introduce más acoplamiento estructural.
-* Qué estrategia desplaza el acoplamiento hacia contratos explícitos.
-* Qué riesgos aparecen solo a medio y largo plazo.
+Allowing each microfrontend to define its own Angular Material theme maximizes autonomy without introducing relevant technical conflicts.
 
-La PoC **no concluye una solución definitiva**, sino una **recomendación provisional condicionada al contexto organizativo y técnico**.
+### Allowed changes relative to `main`
+
+- Each microfrontend:
+
+  - Installs Angular Material.
+  - Defines and compiles its own theme.
+
+- The host:
+
+  - Does not define Angular Material styles.
+  - Does not publish any theming-related CSS.
+
+### Explicitly prohibited changes
+
+- Sharing Material CSS between MFs.
+- Centralizing visual decisions in the host.
+- Forcing artificial visual consistency.
+
+### Experiments to perform
+
+1. Use different Angular Material versions across MFs (if possible).
+2. Modify one MF's theme without touching the other.
+3. Introduce minimal global styles (body, typography) and observe conflicts.
+
+### Required observations
+
+- The real degree of build isolation.
+- Conflicts from global styles.
+- Impact on user experience (even if not a success criterion).
+
+### Architectural failure signals
+
+- Inevitable global collisions.
+- Need for coordination to make local changes.
+
+---
+
+## Experiment 3 — Shared design tokens + local theme
+
+### Hypothesis under test
+
+Sharing versioned design tokens, while keeping local compilation of the Angular Material theme, provides visual consistency without sacrificing microfrontend autonomy.
+
+### Allowed changes relative to `main`
+
+- Introduce `packages/tokens` as the single source of design decisions.
+
+- The microfrontends:
+
+  - Import tokens.
+  - Locally compile their Material theme using those tokens.
+
+- The host:
+
+  - Does not define or distribute themes.
+
+### Explicitly prohibited changes
+
+- Include Angular Material within `tokens`.
+- Expose compiled CSS from `tokens`.
+- Import tokens directly into the host for Material styles.
+
+### Experiments to perform
+
+1. Create an initial tokens version (v1).
+2. Create an incompatible tokens version (v2).
+3. Migrate MF-A to v2 while keeping MF-B on v1.
+
+### Required observations
+
+- Where coupling manifests.
+- Whether the coupling is technical or contractual.
+- Impact on independent versioning and deployment.
+
+### Architectural failure signals
+
+- MFs stop being buildable without synchronization.
+- Tokens behave like a concealed shared library.
+
+---
+
+## Comparison and closing remarks
+
+After completing the three experiments, produce a comparative analysis that explicitly answers:
+
+- Which strategy introduces the most structural coupling.
+- Which strategy shifts coupling toward explicit contracts.
+- Which risks appear only in the mid- to long-term.
+
+The PoC does not conclude a definitive solution, but rather a provisional recommendation conditioned by organizational and technical context.
