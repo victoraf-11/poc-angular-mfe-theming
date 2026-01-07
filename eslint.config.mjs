@@ -23,6 +23,12 @@ export default [
           ],
         },
       ],
+      '@angular-eslint/component-class-suffix': [
+        'error',
+        {
+          suffixes: ['Page', 'Component', 'Container', 'Layout'],
+        },
+      ],
     },
   },
   {
