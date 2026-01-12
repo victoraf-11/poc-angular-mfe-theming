@@ -1,0 +1,10 @@
+{
+  "name": "@org/native-federation",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@org/federation-core": "0.0.1",
+    "@angular/core": "~17.3.0"
+  },
+  "sideEffects": false,
+  "dependencies": {}
+}

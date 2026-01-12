@@ -7,13 +7,34 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular-architects/native-federation:build",
+      "configurations": {
+        "production": {
+          "target": "shell:build-base:production"
+        },
+        "development": {
+          "target": "shell:build-base:development",
+          "dev": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "shell:serve-base:development",
+        "dev": true,
+        "rebuildDelay": 0
+      }
+    },
+    "build-base": {
+      "executor": "@nx/angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/shell",
         "index": "apps/shell/src/index.html",
         "browser": "apps/shell/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": ["zone.js", "es-module-shims"],
         "tsConfig": "apps/shell/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/shell/src/favicon.ico", "apps/shell/src/assets"],
@@ -24,17 +45,26 @@
         "production": {
           "budgets": [
             {
-              "type": "initial",
+              "type": "bundle",
+              "name": "vendor",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "800kb"
+            },
+            {
+              "type": "initial",
+              "maximumWarning": "600kb",
+              "maximumError": "900kb"
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
+              "maximumWarning": "15kb",
+              "maximumError": "20kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "sourceMap": {
+            "hidden": true
+          }
         },
         "development": {
           "optimization": false,
@@ -44,17 +74,22 @@
       },
       "defaultConfiguration": "production"
     },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+    "serve-base": {
+      "executor": "@nx/angular:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "shell:build:production"
+          "buildTarget": "shell:build-base:production"
         },
         "development": {
-          "buildTarget": "shell:build:development"
+          "buildTarget": "shell:build-base:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "options": {
+        "host": "0.0.0.0",
+        "port": 4200,
+        "publicHost": "http://localhost:4200"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -72,12 +107,10 @@
         "jestConfig": "apps/shell/jest.config.ts"
       }
     },
-    "serve-static": {
-      "executor": "@nx/web:file-server",
+    "optimize-assets": {
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "shell:build",
-        "staticFilePath": "dist/apps/shell/browser",
-        "spa": true
+        "command": "pnpx --yes @funboxteam/optimizt apps/shell/src/assets"
       }
     }
   }

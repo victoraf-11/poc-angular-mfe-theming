@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
     "lib": ["es2022", "dom"],
-    "module": "es2020",
-    "moduleResolution": "node",
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
     "skipLibCheck": true,
-    "strict": true,
-    "target": "es2022"
-  }
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@org/federation-core": ["libs/federation/core/src/index.ts"],
+      "@org/module-federation": ["libs/federation/module-federation/src/index.ts"],
+      "@org/native-federation": ["libs/federation/native-federation/src/index.ts"]
+    },
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["node_modules", "tmp"]
 }

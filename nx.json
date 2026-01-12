@@ -10,6 +10,7 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/eslint.config.mjs",
       "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": []
@@ -44,6 +45,16 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
+    "@angular-architects/native-federation:build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "@nx/angular:package": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
     "@nx/eslint:lint": {
       "cache": true,
       "inputs": [
@@ -73,6 +84,13 @@
       "linter": "eslint",
       "style": "scss",
       "unitTestRunner": "jest"
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss"
     }
   }
 }
