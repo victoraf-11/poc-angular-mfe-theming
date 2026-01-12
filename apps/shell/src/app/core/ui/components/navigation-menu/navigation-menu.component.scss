@@ -1,0 +1,162 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navigation-menu {
+  background: hsla(214, 62%, 21%, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  border-radius: 0 0 1.5rem 1.5rem;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-brand {
+  padding: 1.25rem 0;
+}
+
+.brand-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.3px;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+
+  .toggle-line {
+    width: 25px;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  &.active {
+    .toggle-line:nth-child(1) {
+      transform: rotate(45deg) translate(7px, 7px);
+    }
+    .toggle-line:nth-child(2) {
+      opacity: 0;
+    }
+    .toggle-line:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+  }
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-item {
+  margin: 0;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 2px;
+    background: white;
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    color: white;
+    background: hsla(214, 62%, 26%, 1);
+
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+
+  &.active {
+    color: white;
+    background: hsla(214, 62%, 28%, 1);
+
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    flex-wrap: wrap;
+    padding: 0 1rem;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height 0.3s ease,
+      opacity 0.3s ease;
+    gap: 0;
+
+    &.open {
+      max-height: 300px;
+      opacity: 1;
+      padding-bottom: 1rem;
+    }
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-link {
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+
+    &::after {
+      bottom: 12px;
+    }
+  }
+}

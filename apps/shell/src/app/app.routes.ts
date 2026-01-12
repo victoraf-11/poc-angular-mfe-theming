@@ -3,7 +3,7 @@ import { Federations, FederationType } from '@org/federation-core';
 
 export const appRoutes = (federations: Federations): Route[] => {
   const nativeFederation = Array.from(federations).find(
-    (federation) => federation.type === FederationType.NATIVE_FEDERATION,
+    federation => federation.type === FederationType.NATIVE_FEDERATION
   );
 
   if (!nativeFederation) {
@@ -15,18 +15,15 @@ export const appRoutes = (federations: Federations): Route[] => {
   return [
     {
       path: '',
-      loadComponent: () =>
-        import('./core/ui/pages/root-page/root.page').then((p) => p.RootPage),
+      loadComponent: () => import('./core/ui/pages/root-page/root.page').then(p => p.RootPage),
     },
     {
       path: 'mfe-a',
-      loadChildren: () =>
-        loadNfRemoteModule('mfeA', './Routes').then((m) => m.appRoutes),
+      loadChildren: () => loadNfRemoteModule('mfe-a', './Routes').then(m => m.appRoutes),
     },
     {
       path: 'mfe-b',
-      loadChildren: () =>
-        loadNfRemoteModule('mfeB', './Routes').then((m) => m.appRoutes),
+      loadChildren: () => loadNfRemoteModule('mfe-b', './Routes').then(m => m.appRoutes),
     },
   ];
 };
