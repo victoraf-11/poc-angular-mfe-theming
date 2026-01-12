@@ -44,3 +44,9 @@ Thumbs.db
 .github/instructions/nx.instructions.md
 
 .angular
+
+# NX (nx-angular setup generator)
+.nx
+# Env files (nx-angular setup generator)
+.env*
+.angular
