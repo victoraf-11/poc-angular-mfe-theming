@@ -106,8 +106,44 @@ Los mfes dependen implícitamente del host para:
 - Variables CSS globales
 - Orden de carga de estilos
 - Compatibilidad exacta de versiones de Angular Material
+- **Providers en runtime** (ver más abajo)
 
 Estas dependencias **no están declaradas**, **no están versionadas** y **no están gobernadas**.
+
+---
+
+### Acoplamiento de providers en runtime
+
+Un acoplamiento crítico y frecuentemente ignorado ocurre con los providers de Angular. Cuando los MFEs usan componentes de Angular Material que requieren providers específicos (ej. `provideAnimations()` para `MatFormField`), el **host debe declarar estos providers**, no el MFE.
+
+Esto ocurre porque:
+
+1. Los MFEs ejecutan dentro del contexto del injector del shell en runtime
+2. El `app.config.ts` del shell es la fuente real de providers
+3. El `app.config.ts` del MFE solo se usa cuando se ejecuta en standalone
+
+**Consecuencias:**
+
+- El shell debe tener **conocimiento de los requisitos del MFE** para funcionar correctamente
+- Los MFEs **deben documentar sus dependencias de providers** explícitamente
+- Si el shell no declara un provider requerido, los MFEs fallan en runtime sin warning en build
+- El shell declara providers que no necesita para su propio código
+
+```typescript
+// shell/app.config.ts
+return {
+  providers: [
+    provideRouter(appRoutes(federations)),
+    // El shell no necesita esto, pero los MFEs sí
+    provideAnimations(),
+  ],
+};
+```
+
+Esto no es inherentemente malo, pero crea:
+- **Dependencia invertida**: el host depende de conocer lo que necesitan los MFEs
+- **Carga de documentación**: los MFEs deben especificar claramente sus requisitos en runtime
+- **Fragilidad en runtime**: no hay validación en tiempo de compilación de la disponibilidad de providers
 
 ---
 

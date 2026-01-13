@@ -47,22 +47,69 @@ The following conditions are deliberate and part of the experiment:
 
 ## Experiment implementation
 
-### Shell
+### Shell (`apps/shell/src/styles.scss`)
 
-- Defines a complete Material theme (`primary`, `accent`, `warn`, typography).
-- Compiles the theme using SCSS (`mat.define-theme`, `mat.all-component-themes`).
-- Includes the compiled theme CSS as global styles.
+The shell defines and compiles the complete Angular Material theme:
+
+```scss
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$shell-primary: mat.m2-define-palette(mat.$m2-indigo-palette, 500);
+$shell-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+$shell-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$shell-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $shell-primary,
+    accent: $shell-accent,
+    warn: $shell-warn,
+  ),
+  typography: mat.m2-define-typography-config(...),
+  density: 0,
+));
+
+@include mat.all-component-themes($shell-theme);
+```
 
 The shell **assumes full authority** over the visual appearance of the application.
 
 ---
 
-### MFEs
+### MFEs (`apps/mfe-a`, `apps/mfe-b`)
 
-- Install Angular Material.
-- Use Material components (`mat-toolbar`, `mat-button`, etc.).
-- Do not define any local theme.
-- Implicitly assume the required CSS will be present at runtime.
+MFE styles explicitly document the intentional fragility:
+
+```scss
+/**
+ * This microfrontend does NOT define any Angular Material theme.
+ * It ASSUMES the host (shell) will provide the theme at runtime.
+ *
+ * CONSEQUENCES:
+ * 1. Running mfe-a standalone will show UNSTYLED Material components
+ * 2. mfe-a cannot be tested in isolation with correct theming
+ * 3. mfe-a is IMPLICITLY COUPLED to whatever theme the host defines
+ */
+
+/* Minimal styles - NO Material theme compilation */
+```
+
+MFE components use Material modules directly without theme access:
+
+```typescript
+@Component({
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    // etc.
+  ],
+})
+export class RootPage {
+  // Component uses Material components but has NO access to theme variables
+}
+```
 
 ---
 
@@ -103,8 +150,44 @@ Mfes implicitly depend on the host for:
 - Global CSS variables
 - Stylesheet load order
 - Exact compatibility between Angular Material versions
+- **Runtime providers** (see below)
 
 These dependencies **are not declared**, **not versioned**, and **not governed**.
+
+---
+
+### Runtime provider coupling
+
+A critical and often overlooked coupling occurs with Angular providers. When MFEs use Angular Material components that require specific providers (e.g., `provideAnimations()` for `MatFormField`), the **host must declare these providers**, not the MFE.
+
+This happens because:
+
+1. MFEs execute within the shell's injector context at runtime
+2. The shell's `app.config.ts` is the actual provider source
+3. MFE's own `app.config.ts` is only used when running standalone
+
+**Consequences:**
+
+- The shell must have **knowledge of MFE requirements** to function correctly
+- MFEs **must document their provider dependencies** explicitly
+- If the shell doesn't declare a required provider, MFEs break at runtime with no build-time warning
+- The shell declares providers it doesn't need for its own code
+
+```typescript
+// shell/app.config.ts
+return {
+  providers: [
+    provideRouter(appRoutes(federations)),
+    // Shell doesn't need this, but MFEs do
+    provideAnimations(),
+  ],
+};
+```
+
+This is not inherently bad, but it creates:
+- **Inverted dependency**: host depends on knowing what MFEs need
+- **Documentation burden**: MFEs must clearly specify runtime requirements
+- **Runtime fragility**: no compile-time validation of provider availability
 
 ---
 
