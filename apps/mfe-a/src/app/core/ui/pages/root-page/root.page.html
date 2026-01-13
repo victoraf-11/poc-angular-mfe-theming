@@ -1,1 +1,62 @@
-<app-nx-welcome />
+<div class="mfe-container">
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>widgets</mat-icon>
+      <mat-card-title>{{ mfeName }}</mat-card-title>
+      <mat-card-subtitle>Microfrontend without local theming</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="warning-text">
+        <strong>⚠️ Architectural Coupling Exposed:</strong>
+        This microfrontend uses Angular Material components but does NOT compile its own theme. The
+        styling you see comes entirely from the host.
+      </p>
+
+      <mat-divider></mat-divider>
+
+      <div class="dependency-info">
+        <h3>Runtime Dependencies</h3>
+        <mat-chip-set aria-label="Dependencies">
+          <mat-chip color="warn" highlighted>Theme Source: {{ themeSource }}</mat-chip>
+          <mat-chip color="primary" highlighted>mat.core() from Host</mat-chip>
+          <mat-chip color="accent" highlighted>Palette from Host</mat-chip>
+        </mat-chip-set>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="counter-section">
+        <h3>Interactive Material Components</h3>
+
+        <p>
+          Counter: <strong>{{ counter }}</strong>
+        </p>
+
+        <div class="button-row">
+          <button mat-raised-button color="primary" (click)="increment()">
+            <mat-icon>add</mat-icon>
+            Increment
+          </button>
+
+          <button mat-raised-button color="accent" (click)="decrement()">
+            <mat-icon>remove</mat-icon>
+            Decrement
+          </button>
+
+          <button mat-stroked-button color="warn" (click)="counter = 0">
+            <mat-icon>refresh</mat-icon>
+            Reset
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button color="primary">
+        <mat-icon>info</mat-icon>
+        About MFE-A
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

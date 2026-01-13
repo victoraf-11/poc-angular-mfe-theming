@@ -1,0 +1,56 @@
+/**
+ * MFE-B Page Styles
+ *
+ * NOTE: These are LAYOUT styles only.
+ * No Material theming variables are used here because
+ * this MFE does NOT have access to the theme.
+ *
+ * Any attempt to use $primary, $accent, etc. would fail
+ * because those variables are only defined in the host.
+ */
+
+.mfe-container {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.info-card {
+  margin-bottom: 24px;
+}
+
+.warning-text {
+  padding: 16px;
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.form-section {
+  margin: 24px 0;
+
+  h3 {
+    margin-bottom: 16px;
+  }
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.action-section {
+  margin: 24px 0;
+
+  h3 {
+    margin-bottom: 16px;
+  }
+}
+
+.button-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}

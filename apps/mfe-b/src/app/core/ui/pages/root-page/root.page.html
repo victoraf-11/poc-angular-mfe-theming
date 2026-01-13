@@ -1,1 +1,83 @@
-<app-nx-welcome />
+<div class="mfe-container">
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>extension</mat-icon>
+      <mat-card-title>{{ mfeName }}</mat-card-title>
+      <mat-card-subtitle>Microfrontend without local theming</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="warning-text">
+        <strong>⚠️ Architectural Coupling Exposed:</strong>
+        This microfrontend uses Angular Material form components but does NOT compile its own theme.
+        All form styling comes from the host.
+      </p>
+
+      <div class="form-section">
+        <h3>Material Form Components</h3>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>User Name</mat-label>
+          <input matInput [(ngModel)]="userName" placeholder="Enter your name" />
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-hint>This input is styled by the host's theme</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Priority</mat-label>
+
+          <mat-select [(ngModel)]="selectedPriority">
+            @for (priority of priorities; track priority.value) {
+              <mat-option [value]="priority.value">
+                {{ priority.label }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-hint>Select colors come from host theme</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-section">
+        <h3>Action Buttons (Host-themed)</h3>
+
+        <div class="button-row">
+          <button mat-raised-button color="primary">
+            <mat-icon>save</mat-icon>
+            Primary Action
+          </button>
+
+          <button mat-raised-button color="accent">
+            <mat-icon>edit</mat-icon>
+            Accent Action
+          </button>
+
+          <button mat-raised-button color="warn">
+            <mat-icon>delete</mat-icon>
+            Warn Action
+          </button>
+        </div>
+
+        <div class="button-row">
+          <button mat-fab color="primary">
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <button mat-mini-fab color="accent">
+            <mat-icon>favorite</mat-icon>
+          </button>
+
+          <button mat-mini-fab color="warn">
+            <mat-icon>warning</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button color="primary">
+        <mat-icon>info</mat-icon>
+        About MFE-B
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

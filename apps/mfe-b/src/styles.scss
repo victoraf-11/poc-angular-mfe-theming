@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+/**
+ * This microfrontend does NOT define any Angular Material theme.
+ * It ASSUMES the host (shell) will provide the theme at runtime.
+ *
+ * CONSEQUENCES:
+ * 1. Running mfe-b standalone will show UNSTYLED Material components
+ * 2. mfe-b cannot be tested in isolation with correct theming
+ * 3. mfe-b is IMPLICITLY COUPLED to whatever theme the host defines
+ * 4. Any change to the host's theme affects mfe-b without its consent
+ * 5. mfe-b cannot evolve its visual design independently
+ *
+ * DO NOT ADD @angular/material theming imports here.
+ * This is intentional to expose the coupling.
+ * =====================================================================
+ */
+
+/* Minimal styles - NO Material theme compilation */
