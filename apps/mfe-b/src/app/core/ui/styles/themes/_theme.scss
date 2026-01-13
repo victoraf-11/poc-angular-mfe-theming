@@ -1,0 +1,192 @@
+/**
+ * MFE-B Local Angular Material Theme
+ * EXPERIMENT 02 - Fully local theme per MFE
+ *
+ * This microfrontend compiles its OWN Angular Material theme.
+ * It does NOT depend on the shell for theming.
+ *
+ * CUSTOM PALETTE: "Deep Slate Blue" brand identity
+ * Primary: Rich slate blue (#334155)
+ * Accent: Bright cyan (#06b6d4)
+ *
+ * CRITICAL: This is a DIFFERENT theme than mfe-a.
+ * This maximizes visual contrast to expose global side effects.
+ *
+ * ARCHITECTURAL OBSERVATIONS:
+ * 1. When mfe-b loads AFTER mfe-a:
+ *    - MFE-B's :root variables overwrite mfe-a's variables
+ *    - All Material components adopt mfe-b's color scheme
+ *
+ * 2. When mfe-b loads BEFORE mfe-a:
+ *    - MFE-A's theme wins instead
+ *    - The MFE that loads LAST controls the ENTIRE document's theme
+ *
+ * 3. This proves that Angular Material themes are DOCUMENT-GLOBAL,
+ *    not component-scoped.
+ */
+
+@use '@angular/material' as mat;
+
+// ============================================================================
+// CUSTOM PALETTE: "Deep Slate Blue" - MFE-B Brand Identity
+// These are NOT Material predefined palettes - they represent a custom brand
+// ============================================================================
+
+$deep-slate-palette: (
+  50: #f8fafc,
+  100: #f1f5f9,
+  200: #e2e8f0,
+  300: #cbd5e1,
+  400: #94a3b8,
+  500: #334155,
+  // Primary brand color - slate blue
+  600: #475569,
+  700: #1e293b,
+  800: #0f172a,
+  900: #020617,
+  A100: #cbd5e1,
+  A200: #94a3b8,
+  A400: #334155,
+  A700: #1e293b,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$bright-cyan-palette: (
+  50: #ecfeff,
+  100: #cffafe,
+  200: #a5f3fc,
+  300: #67e8f9,
+  400: #22d3ee,
+  500: #06b6d4,
+  // Accent brand color - cyan
+  600: #0891b2,
+  700: #0e7490,
+  800: #155e75,
+  900: #164e63,
+  A100: #67e8f9,
+  A200: #22d3ee,
+  A400: #06b6d4,
+  A700: #0e7490,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$custom-warn-palette: (
+  50: #fffbeb,
+  100: #fef3c7,
+  200: #fde68a,
+  300: #fcd34d,
+  400: #fbbf24,
+  500: #f59e0b,
+  // Custom warn - amber
+  600: #d97706,
+  700: #b45309,
+  800: #92400e,
+  900: #78350f,
+  A100: #fde68a,
+  A200: #fcd34d,
+  A400: #f59e0b,
+  A700: #b45309,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #ffffff,
+  ),
+);
+
+// Custom brand palettes - NOT Material predefined
+$primary-palette: mat.define-palette($deep-slate-palette, 500, 100, 900);
+$accent-palette: mat.define-palette($bright-cyan-palette, 500, 100, 900);
+$warn-palette: mat.define-palette($custom-warn-palette, 500, 100, 900);
+
+// Define theme for MFE-B
+$mfe-b-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary-palette,
+      accent: $accent-palette,
+      warn: $warn-palette,
+    ),
+    typography: mat.define-typography-config(
+        $font-family: '"Segoe UI", Roboto, sans-serif',
+        $headline-1: mat.define-typography-level(36px, 44px, 600),
+        $body-1: mat.define-typography-level(15px, 22px, 400),
+      ),
+    density: -1,
+    // Slightly denser than mfe-a to show density conflicts
+  )
+);
+
+// ============================================================================
+// THEME APPLICATION MIXIN
+// ============================================================================
+/**
+ * This mixin encapsulates the theme application logic.
+ * It must be called from a component's styleUrl (e.g., base.layout.scss)
+ * because global styles.scss is IGNORED when MFE is loaded via Native Federation.
+ *
+ * GLOBAL SIDE EFFECTS - DUPLICATE GENERATION:
+ *
+ * mat.core() will generate the SAME global CDK styles that mfe-a generates.
+ * This results in:
+ * - Duplicate CSS in the document
+ * - Increased bundle size
+ * - Last-loaded styles winning
+ *
+ * MFE-B THEME GLOBAL SIDE EFFECTS:
+ *
+ * mat.all-component-themes() generates:
+ * - Background colors for .mat-app-background
+ * - Text colors for contrast
+ * - Elevation shadows
+ * - Form field fill colors
+ *
+ * When this loads AFTER mfe-a:
+ * - The ENTIRE document adopts mfe-b's theme
+ * - mfe-a's components will ALSO use mfe-b's colors
+ * - There is no scoping mechanism
+ */
+@mixin apply-theme() {
+  @include mat.core();
+  @include mat.all-component-themes($mfe-b-theme);
+}

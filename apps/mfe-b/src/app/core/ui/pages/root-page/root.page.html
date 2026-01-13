@@ -1,85 +1,123 @@
-<div class="mfe-container">
-  <mat-card class="info-card">
-    <mat-card-header>
-      <mat-icon mat-card-avatar>extension</mat-icon>
-      <mat-card-title>{{ mfeName }}</mat-card-title>
-      <mat-card-subtitle>Microfrontend without local theming</mat-card-subtitle>
-    </mat-card-header>
+<app-base-layout-b>
+  <div class="mfe-container mfe-b-container">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>extension</mat-icon>
+        <mat-card-title>{{ mfeName }} — Local Theme</mat-card-title>
+        <mat-card-subtitle>EXPERIMENT 02: {{ themeType }}</mat-card-subtitle>
+      </mat-card-header>
 
-    <mat-card-content>
-      <p class="warning-text">
-        <strong>⚠️ Architectural Coupling Exposed:</strong>
-        This microfrontend uses Angular Material form components but does NOT compile its own theme.
-        All form styling comes from the host.
-      </p>
+      <mat-card-content>
+        <p class="experiment-info">
+          <strong>🔬 Experiment 02 — Local Theme Compilation</strong><br />
+          This MFE compiles its OWN Angular Material theme. It does NOT depend on the shell.
+          However, Angular Material generates GLOBAL CSS that cannot be scoped.
+        </p>
 
-      <div class="form-section">
-        <h3>Material Form Components</h3>
+        <div class="theme-info">
+          <h3>Theme Configuration — Custom Brand</h3>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Username</mat-label>
-          <input matInput [(ngModel)]="userName" placeholder="Enter your name" />
-          
-          <mat-icon matSuffix>person</mat-icon>
-          <mat-hint>This input is styled by the host's theme</mat-hint>
-        </mat-form-field>
+          <p class="color-indicator" [style.background]="expectedPrimaryColor">
+            Expected Primary: {{ expectedPrimaryColor }} (Deep Slate Blue)
+          </p>
 
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Priority</mat-label>
+          <p class="color-indicator" [style.background]="expectedAccentColor">
+            Expected Accent: {{ expectedAccentColor }} (Bright Cyan)
+          </p>
 
-          <mat-select [(ngModel)]="selectedPriority">
-            @for (priority of priorities; track priority.value) {
-              <mat-option [value]="priority.value">
-                {{ priority.label }}
-              </mat-option>
-            }
-          </mat-select>
-
-          <mat-hint>Select colors come from host theme</mat-hint>
-        </mat-form-field>
-      </div>
-
-      <div class="action-section">
-        <h3>Action Buttons (Host-themed)</h3>
-
-        <div class="button-row">
-          <button mat-raised-button color="primary">
-            <mat-icon>save</mat-icon>
-            Primary Action
-          </button>
-
-          <button mat-raised-button color="accent">
-            <mat-icon>edit</mat-icon>
-            Accent Action
-          </button>
-
-          <button mat-raised-button color="warn">
-            <mat-icon>delete</mat-icon>
-            Warn Action
-          </button>
+          <p class="mode-indicator">Density: -1 (compact)</p>
         </div>
 
-        <div class="button-row">
-          <button mat-fab color="primary">
-            <mat-icon>add</mat-icon>
-          </button>
+        <div class="form-section">
+          <h3>Material Form Components (Theme Demonstration)</h3>
 
-          <button mat-mini-fab color="accent">
-            <mat-icon>favorite</mat-icon>
-          </button>
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="userName" placeholder="Enter your name" />
 
-          <button mat-mini-fab color="warn">
-            <mat-icon>warning</mat-icon>
-          </button>
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-hint>Form field should have Deep Slate Blue styling</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Priority</mat-label>
+
+            <mat-select [(ngModel)]="selectedPriority">
+              @for (priority of priorities; track priority.value) {
+                <mat-option [value]="priority.value">
+                  {{ priority.label }}
+                </mat-option>
+              }
+            </mat-select>
+
+            <mat-hint>Dropdown should use Deep Slate Blue theme colors</mat-hint>
+          </mat-form-field>
+
+          <!-- Slider to demonstrate accent color -->
+          <mat-slider min="0" max="100" step="1" showTickMarks discrete>
+            <input matSliderThumb [(ngModel)]="sliderValue" />
+          </mat-slider>
+          <p>Slider value: {{ sliderValue }} (track should be Bright Cyan)</p>
+
+          <!-- Checkbox to demonstrate primary color -->
+          <mat-checkbox [(ngModel)]="checkboxValue" color="primary">
+            Checkbox (should be Deep Slate Blue when checked)
+          </mat-checkbox>
         </div>
-      </div>
-    </mat-card-content>
 
-    <mat-card-actions align="end">
-      <button mat-button color="primary">
-        <mat-icon>info</mat-icon>
-        About MFE-B
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+        <div class="action-section">
+          <h3>Action Buttons (Theme Demonstration)</h3>
+
+          <div class="button-row">
+            <button mat-raised-button color="primary">
+              <mat-icon>save</mat-icon>
+              Primary (Violet)
+            </button>
+
+            <button mat-raised-button color="accent">
+              <mat-icon>edit</mat-icon>
+              Accent (Coral)
+            </button>
+
+            <button mat-raised-button color="warn">
+              <mat-icon>delete</mat-icon>
+              Warn (Orange)
+            </button>
+          </div>
+
+          <div class="button-row">
+            <button mat-fab color="primary">
+              <mat-icon>add</mat-icon>
+            </button>
+
+            <button mat-mini-fab color="accent">
+              <mat-icon>favorite</mat-icon>
+            </button>
+
+            <button mat-mini-fab color="warn">
+              <mat-icon>warning</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="isolation-test">
+          <h3>Global Side Effect Indicators</h3>
+
+          <p class="warning-text">
+            ⚠️ With lazy-loaded routing, navigating between MFEs reloads each BaseLayout component,
+            re-injecting the correct theme. The theme collision problem would occur if multiple MFEs
+            were loaded SIMULTANEOUSLY (e.g., in a multi-outlet layout or tabs). In route-based
+            navigation, the last-loaded MFE's theme always wins — which is the current MFE.
+          </p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button color="primary">
+          <mat-icon>info</mat-icon>
+          MFE-B Info
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</app-base-layout-b>

@@ -6,21 +6,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { BaseLayout } from '../../layouts/base/base.layout';
 
 /**
- * This component imports and uses Angular Material components but does
- * NOT compile any theme. It DEPENDS on the host (shell) having already
- * loaded and applied the Material theme to the DOM.
+ * MFE-B Root Page - EXPERIMENT 02
  *
- * IMPLICIT RUNTIME DEPENDENCIES:
- * - mat.core() must have been called by the host
- * - mat.all-component-themes() must have been called by the host
- * - The host's styles.scss must be loaded BEFORE this component renders
+ * This component uses Angular Material with a LOCALLY COMPILED THEME.
  *
- * If mfe-b is run standalone (without the shell), these components will
- * render WITHOUT proper styling.
- * =====================================================================
+ * CRITICAL: Theme is imported via BaseLayoutComponent, NOT via styles.scss
+ * because global MFE styles are ignored when loaded via Native Federation.
  */
 @Component({
   selector: 'app-root.page',
@@ -34,15 +31,22 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatSliderModule,
+    MatCheckboxModule,
+    BaseLayout,
   ],
   templateUrl: './root.page.html',
   styleUrl: './root.page.scss',
 })
 export class RootPage {
   readonly mfeName = 'MFE-B';
-  readonly themeSource = 'Host (Shell)';
+  readonly themeType = '"Deep Slate Blue" Brand';
+  readonly expectedPrimaryColor = '#334155'; // Custom Deep Slate Blue
+  readonly expectedAccentColor = '#06b6d4'; // Custom Bright Cyan
   userName = '';
   selectedPriority = '';
+  sliderValue = 50;
+  checkboxValue = false;
 
   priorities = [
     { value: 'low', label: 'Low' },
