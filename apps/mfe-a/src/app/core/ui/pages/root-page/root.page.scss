@@ -1,12 +1,11 @@
 /**
- * MFE-A Page Styles
+ * MFE-A Page Styles - EXPERIMENT 02
  *
- * NOTE: These are LAYOUT styles only.
- * No Material theming variables are used here because
- * this MFE does NOT have access to the theme.
+ * Layout and structural styles only.
+ * Theme colors come from the locally compiled Angular Material theme.
  *
- * Any attempt to use $primary, $accent, etc. would fail
- * because those variables are only defined in the host.
+ * NOTE: We intentionally use some hardcoded colors here to create
+ * visual markers that help identify which MFE's styles are active.
  */
 
 .mfe-container {
@@ -15,8 +14,22 @@
   margin: 0 auto;
 }
 
+.mfe-a-container {
+  /* Border to visually identify MFE-A's boundary */
+  border-left: 4px solid #0066cc; /* Ocean Blue - MFE-A's custom primary */
+}
+
 .info-card {
   margin-bottom: 24px;
+}
+
+.experiment-info {
+  padding: 16px;
+  background-color: #e0f0ff; /* Ocean Blue 50 - light theme indicator */
+  border-left: 4px solid #0066cc;
+  margin: 16px 0;
+  border-radius: 4px;
+  line-height: 1.6;
 }
 
 .warning-text {
@@ -27,24 +40,50 @@
   border-radius: 4px;
 }
 
-.dependency-info {
+.theme-info {
   margin: 24px 0;
 
   h3 {
     margin-bottom: 16px;
   }
+
+  .color-indicator {
+    margin-top: 16px;
+    padding: 12px;
+    color: white;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+  }
 }
 
-.counter-section {
+.component-demo {
   margin: 24px 0;
 
   h3 {
+    margin-bottom: 16px;
+  }
+
+  mat-progress-bar {
+    margin-bottom: 16px;
+  }
+
+  mat-slide-toggle {
+    display: block;
     margin-bottom: 16px;
   }
 
   p {
     margin-bottom: 16px;
     font-size: 18px;
+  }
+}
+
+.isolation-test {
+  margin: 24px 0;
+
+  h3 {
+    margin-bottom: 16px;
   }
 }
 

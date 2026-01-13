@@ -1,16 +1,28 @@
 /**
- * This microfrontend does NOT define any Angular Material theme.
- * It ASSUMES the host (shell) will provide the theme at runtime.
+ * MFE-A Global Styles - EXPERIMENT 02
  *
- * CONSEQUENCES:
- * 1. Running mfe-a standalone will show UNSTYLED Material components
- * 2. mfe-a cannot be tested in isolation with correct theming
- * 3. mfe-a is IMPLICITLY COUPLED to whatever theme the host defines
- * 4. Any change to the host's theme affects mfe-a without its consent
- * 5. mfe-a cannot evolve its visual design independently
+ * ============================================================================
+ * CRITICAL ARCHITECTURAL FINDING:
+ * THIS FILE IS IGNORED WHEN MFE IS LOADED VIA NATIVE FEDERATION
+ * ============================================================================
  *
- * DO NOT ADD @angular/material theming imports here.
- * This is intentional to expose the coupling.
+ * WHY:
+ * - The shell controls the bootstrap process (main.ts, app.config)
+ * - MFE global styles.scss are not injected at runtime
+ * - Only the shell's styles.scss is loaded
+ *
+ * CONSEQUENCE:
+ * - @use './app/core/ui/styles/themes/theme' here does NOTHING in production
+ * - mat.core() and mat.all-component-themes() are never executed
+ * - Material components would render UNSTYLED
+ *
+ * SOLUTION:
+ * - Theme is imported via BaseLayoutComponent (component-level styles)
+ * - Component styleUrls ARE processed and injected at runtime
+ * - See: apps/mfe-a/src/app/core/ui/layouts/base-layout/
+ *
+ * THIS FILE:
+ * - Only works when MFE runs STANDALONE (ng serve)
+ * - Does NOT work when MFE is consumed by shell
+ * - Kept for standalone development only
  */
-
-/* Minimal styles - NO Material theme compilation */

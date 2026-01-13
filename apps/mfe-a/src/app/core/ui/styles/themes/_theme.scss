@@ -1,0 +1,193 @@
+/**
+ * MFE-A Local Angular Material Theme
+ * EXPERIMENT 02 - Fully local theme per MFE
+ *
+ * This microfrontend compiles its OWN Angular Material theme.
+ * It does NOT depend on the shell for theming.
+ *
+ * CUSTOM PALETTE: "Ocean Blue" brand identity - LIGHT MODE
+ * Primary: Corporate blue (#0066CC)
+ * Accent: Energetic teal (#00A896)
+ *
+ * CRITICAL ARCHITECTURAL OBSERVATIONS:
+ * 1. mat.core() generates GLOBAL CSS that affects:
+ *    - html, body typography
+ *    - focus-visible outlines
+ *    - ripple effect styles
+ *    - overlay container styles
+ *    - CDK styles (a11y, overlay, etc.)
+ *
+ * 2. mat.all-component-themes() generates:
+ *    - CSS custom properties on :root
+ *    - Global component base styles
+ *    - Typography hierarchy (h1-h6, p, etc.)
+ *
+ * 3. When multiple MFEs load their own theme:
+ *    - The LAST loaded theme's global styles WIN (CSS cascade)
+ *    - No true isolation exists for global selectors
+ *    - Load order becomes a deployment concern
+ */
+
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+// ============================================================================
+// CUSTOM PALETTE: "Ocean Blue" - MFE-A Brand Identity
+// These are NOT Material predefined palettes - they represent a custom brand
+// ============================================================================
+
+$ocean-blue-palette: (
+  50: #e0f0ff,
+  100: #b3d9ff,
+  200: #80bfff,
+  300: #4da6ff,
+  400: #2693ff,
+  500: #0066cc,
+  // Primary brand color
+  600: #005cb8,
+  700: #004fa3,
+  800: #00428f,
+  900: #002e66,
+  A100: #80bfff,
+  A200: #4da6ff,
+  A400: #0066cc,
+  A700: #004fa3,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$energetic-teal-palette: (
+  50: #e0f7f5,
+  100: #b3ece6,
+  200: #80dfd5,
+  300: #4dd2c4,
+  400: #26c8b8,
+  500: #00a896,
+  // Accent brand color
+  600: #009a8a,
+  700: #00897a,
+  800: #00786b,
+  900: #005a4f,
+  A100: #80dfd5,
+  A200: #00a896,
+  A400: #00897a,
+  A700: #005a4f,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$custom-warn-palette: (
+  50: #ffebee,
+  100: #ffcdd2,
+  200: #ef9a9a,
+  300: #e57373,
+  400: #ef5350,
+  500: #d32f2f,
+  // Custom warn - slightly different from Material red
+  600: #c62828,
+  700: #b71c1c,
+  800: #a31515,
+  900: #7f0000,
+  A100: #ff8a80,
+  A200: #ff5252,
+  A400: #ff1744,
+  A700: #d50000,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+// Custom brand palettes - NOT Material predefined
+$primary-palette: mat.define-palette($ocean-blue-palette, 500, 100, 900);
+$accent-palette: mat.define-palette($energetic-teal-palette, 500, 100, 900);
+$warn-palette: mat.define-palette($custom-warn-palette, 500, 100, 900);
+
+// Define LIGHT theme for MFE-A
+$mfe-a-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary-palette,
+      accent: $accent-palette,
+      warn: $warn-palette,
+    ),
+    typography: mat.define-typography-config(
+        $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+        $headline-1: mat.define-typography-level(32px, 40px, 700),
+        $body-1: mat.define-typography-level(14px, 20px, 400),
+      ),
+    density: 0,
+  )
+);
+
+// ============================================================================
+// THEME APPLICATION MIXIN
+// ============================================================================
+/**
+ * This mixin encapsulates the theme application logic.
+ * It must be called from a component's styleUrl (e.g., base.layout.scss)
+ * because global styles.scss is IGNORED when MFE is loaded via Native Federation.
+ *
+ * GLOBAL SIDE EFFECTS:
+ *
+ * mat.core() generates:
+ * - .cdk-overlay-* classes (global)
+ * - .cdk-visually-hidden (global)
+ * - .cdk-a11y-* (global)
+ * - .mat-ripple, .mat-ripple-element (global)
+ * - focus-visible polyfill styles
+ *
+ * mat.all-component-themes() generates:
+ * - .mat-* component styles (global class selectors)
+ * - CSS custom properties on :root (global)
+ * - Typography styles for body, h1-h6 (global element selectors)
+ * - .mat-typography class hierarchy (global)
+ *
+ * PROBLEM: These are NOT scoped. They affect the ENTIRE document.
+ * When another MFE loads with a different theme, these values
+ * will be OVERWRITTEN for the entire page.
+ */
+@mixin apply-theme() {
+  @include mat.core();
+  @include mat.all-component-themes($mfe-a-theme);
+}

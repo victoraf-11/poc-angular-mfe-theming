@@ -1,62 +1,94 @@
-<div class="mfe-container">
-  <mat-card class="info-card">
-    <mat-card-header>
-      <mat-icon mat-card-avatar>widgets</mat-icon>
-      <mat-card-title>{{ mfeName }}</mat-card-title>
-      <mat-card-subtitle>Microfrontend without local theming</mat-card-subtitle>
-    </mat-card-header>
+<app-base-layout-a>
+  <div class="mfe-container mfe-a-container">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>widgets</mat-icon>
+        <mat-card-title>{{ mfeName }} — Local Theme</mat-card-title>
+        <mat-card-subtitle>EXPERIMENT 02: {{ themeType }}</mat-card-subtitle>
+      </mat-card-header>
 
-    <mat-card-content>
-      <p class="warning-text">
-        <strong>⚠️ Architectural Coupling Exposed:</strong>
-        This microfrontend uses Angular Material components but does NOT compile its own theme. The
-        styling you see comes entirely from the host.
-      </p>
-
-      <mat-divider></mat-divider>
-
-      <div class="dependency-info">
-        <h3>Runtime Dependencies</h3>
-        <mat-chip-set aria-label="Dependencies">
-          <mat-chip color="warn" highlighted>Theme Source: {{ themeSource }}</mat-chip>
-          <mat-chip color="primary" highlighted>mat.core() from Host</mat-chip>
-          <mat-chip color="accent" highlighted>Palette from Host</mat-chip>
-        </mat-chip-set>
-      </div>
-
-      <mat-divider></mat-divider>
-
-      <div class="counter-section">
-        <h3>Interactive Material Components</h3>
-
-        <p>
-          Counter: <strong>{{ counter }}</strong>
+      <mat-card-content>
+        <p class="experiment-info">
+          <strong>🔬 Experiment 02 — Local Theme Compilation</strong><br />
+          This MFE compiles its OWN Angular Material theme (LIGHT mode). It does NOT depend on the
+          shell. However, Angular Material generates GLOBAL CSS that cannot be scoped.
         </p>
 
-        <div class="button-row">
-          <button mat-raised-button color="primary" (click)="increment()">
-            <mat-icon>add</mat-icon>
-            Increment
-          </button>
+        <mat-divider></mat-divider>
 
-          <button mat-raised-button color="accent" (click)="decrement()">
-            <mat-icon>remove</mat-icon>
-            Decrement
-          </button>
+        <div class="theme-info">
+          <h3>Theme Configuration — Custom Brand</h3>
 
-          <button mat-stroked-button color="warn" (click)="counter = 0">
-            <mat-icon>refresh</mat-icon>
-            Reset
-          </button>
+          <mat-chip-set aria-label="Theme info">
+            <mat-chip color="primary" highlighted>Primary: Ocean Blue</mat-chip>
+            <mat-chip color="accent" highlighted>Accent: Energetic Teal</mat-chip>
+            <mat-chip color="warn" highlighted>Mode: LIGHT</mat-chip>
+          </mat-chip-set>
+
+          <p class="color-indicator" [style.background]="expectedPrimaryColor">
+            Expected Primary: {{ expectedPrimaryColor }} (Custom)
+          </p>
+
+          <p class="color-indicator" [style.background]="expectedAccentColor">
+            Expected Accent: {{ expectedAccentColor }} (Custom)
+          </p>
         </div>
-      </div>
-    </mat-card-content>
 
-    <mat-card-actions align="end">
-      <button mat-button color="primary">
-        <mat-icon>info</mat-icon>
-        About MFE-A
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+        <mat-divider></mat-divider>
+
+        <div class="component-demo">
+          <h3>Material Components (Theme Demonstration)</h3>
+
+          <!-- Progress bar to show accent color -->
+          <mat-progress-bar mode="determinate" [value]="65" color="accent"></mat-progress-bar>
+
+          <!-- Toggle to show interactive theme styling -->
+          <mat-slide-toggle [(ngModel)]="toggleValue" color="primary">
+            Interactive toggle (should be Ocean Blue)
+          </mat-slide-toggle>
+
+          <p>
+            Counter: <strong>{{ counter }}</strong>
+          </p>
+
+          <div class="button-row">
+            <button mat-raised-button color="primary" (click)="increment()">
+              <mat-icon>add</mat-icon>
+              Primary (Ocean Blue)
+            </button>
+
+            <button mat-raised-button color="accent" (click)="decrement()">
+              <mat-icon>remove</mat-icon>
+              Accent (Teal)
+            </button>
+
+            <button mat-stroked-button color="warn" (click)="counter = 0">
+              <mat-icon>refresh</mat-icon>
+              Warn (Red)
+            </button>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="isolation-test">
+          <h3>Global Side Effect Indicators</h3>
+
+          <p class="warning-text">
+            ⚠️ With lazy-loaded routing, navigating between MFEs reloads each BaseLayout component,
+            re-injecting the correct theme. The theme collision problem would occur if multiple MFEs
+            were loaded SIMULTANEOUSLY (e.g., in a multi-outlet layout or tabs). In route-based
+            navigation, the last-loaded MFE's theme always wins — which is the current MFE.
+          </p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button color="primary">
+          <mat-icon>info</mat-icon>
+          MFE-A Info
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</app-base-layout-a>
