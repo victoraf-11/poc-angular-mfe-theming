@@ -1,28 +1,41 @@
-@use './app/core/ui/styles/themes/theme';
+/**
+ * EXPERIMENT 02 - Shell styles
+ *
+ * CRITICAL: The shell MUST NOT:
+ * - Define any Angular Material theme
+ * - Import @angular/material/theming
+ * - Use mat.core() or mat.all-component-themes()
+ * - Provide any global Material styles
+ *
+ * The shell acts purely as an orchestrator.
+ * Each MFE is responsible for its own Material theme.
+ *
+ * EXPECTED CONSEQUENCE:
+ * When MFEs are loaded, EACH will inject its own compiled Material CSS
+ * into the global DOM. This creates CSS conflicts because Angular Material
+ * generates global styles that cannot be scoped.
+ */
 
-/* Reset and base styles */
+/* Minimal reset - NO Material theming */
 *,
 ::before,
 ::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-width: 0;
-  border-style: solid;
-  border-color: currentColor;
 }
 
 html,
 body {
   height: 100%;
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-y: scroll; // Prevent layout shift when scrollbar appears/disappears
+  /* Using system fonts - NOT Roboto to prove shell has no Material influence */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-y: scroll;
 }
 
 body {
-  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  /* Neutral background - NOT Material themed */
+  background: #f5f5f5;
   color: #333;
 }
