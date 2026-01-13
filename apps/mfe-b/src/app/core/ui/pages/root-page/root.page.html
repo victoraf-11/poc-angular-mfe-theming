@@ -16,9 +16,10 @@
       <div class="form-section">
         <h3>Material Form Components</h3>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>User Name</mat-label>
+        <mat-form-field appearance="fill">
+          <mat-label>Username</mat-label>
           <input matInput [(ngModel)]="userName" placeholder="Enter your name" />
+          
           <mat-icon matSuffix>person</mat-icon>
           <mat-hint>This input is styled by the host's theme</mat-hint>
         </mat-form-field>
@@ -33,6 +34,7 @@
               </mat-option>
             }
           </mat-select>
+
           <mat-hint>Select colors come from host theme</mat-hint>
         </mat-form-field>
       </div>
