@@ -1,19 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+@use './app/core/ui/styles/themes/theme';
 
-* {
+/* Reset and base styles */
+*,
+::before,
+::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  border-width: 0;
+  border-style: solid;
+  border-color: currentColor;
 }
 
 html,
 body {
   height: 100%;
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: scroll; // Prevent layout shift when scrollbar appears/disappears
 }
 
 body {

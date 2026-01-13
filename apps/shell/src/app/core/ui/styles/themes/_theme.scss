@@ -1,0 +1,113 @@
+/**
+ * This file contains the ONLY Angular Material theme definition in the
+ * entire microfrontend architecture.
+ *
+ * ARCHITECTURAL DECISION (INTENTIONALLY PROBLEMATIC):
+ * - The shell (host) owns and compiles the complete Material theme
+ * - MFEs do NOT compile their own theme
+ * - MFEs DEPEND on this theme existing at runtime
+ * - MFEs CANNOT be built, tested, or deployed independently with
+ *   correct theming
+ *
+ * This creates IMPLICIT COUPLING that violates microfrontend autonomy.
+ */
+
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+$primary-palette: mat.define-palette(
+  (
+    50: #e3e8ed,
+    100: #b9c5d3,
+    200: #8a9fb6,
+    300: #5b7999,
+    400: #375c83,
+    500: #14365a,
+    600: #123052,
+    700: #0e2948,
+    800: #0b223f,
+    900: #06162e,
+    A100: #6b9aff,
+    A200: #387aff,
+    A400: #055aff,
+    A700: #0050eb,
+    contrast: (
+      50: #000,
+      100: #000,
+      200: #000,
+      300: #fff,
+      400: #fff,
+      500: #fff,
+      600: #fff,
+      700: #fff,
+      800: #fff,
+      900: #fff,
+      A100: #000,
+      A200: #fff,
+      A400: #fff,
+      A700: #fff,
+    ),
+  )
+);
+
+$accent-palette: mat.define-palette(
+  (
+    50: #fce4ec,
+    100: #f8bbd0,
+    200: #f48fb1,
+    300: #f06292,
+    400: #ec407a,
+    500: #e91e63,
+    600: #d81b60,
+    700: #c2185b,
+    800: #ad1457,
+    900: #880e4f,
+    A100: #ff80ab,
+    A200: #ff4081,
+    A400: #f50057,
+    A700: #c51162,
+    contrast: (
+      50: #000,
+      100: #000,
+      200: #000,
+      300: #000,
+      400: #fff,
+      500: #fff,
+      600: #fff,
+      700: #fff,
+      800: #fff,
+      900: #fff,
+      A100: #000,
+      A200: #fff,
+      A400: #fff,
+      A700: #fff,
+    ),
+  )
+);
+
+$warn-palette: mat.define-palette(mat.$red-palette);
+
+// Define the Material 17 theme
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary-palette,
+      accent: $accent-palette,
+      warn: $warn-palette,
+    ),
+    typography: mat.define-typography-config(
+        $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+        $headline-1: mat.define-typography-level(32px, 36px, 700),
+        $headline-2: mat.define-typography-level(28px, 32px, 500),
+        $headline-3: mat.define-typography-level(24px, 28px, 400),
+        $body-1: mat.define-typography-level(14px, 18px, 400),
+        $button: mat.define-typography-level(14px, 14px, 500),
+      ),
+    density: 0,
+  )
+);
+
+// Apply the theme to all Material components
+// This is the CRITICAL line: MFEs depend on this being executed BEFORE they render
+@include mat.core();
+@include mat.all-component-themes($theme);
