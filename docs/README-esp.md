@@ -17,7 +17,7 @@ Esta PoC existe para responder, con evidencia técnica y análisis crítico, a l
 1. ¿Es viable desacoplar el theming de Angular Material del host sin introducir hacks o dependencias frágiles?
 2. ¿Dónde aparece realmente el acoplamiento entre host y microfrontends en cada estrategia?
 3. ¿Quién ejerce la autoridad del diseño y cómo se manifiesta ese poder técnicamente?
-4. ¿Qué impacto tiene cada enfoque en el versionado y despliegue independiente de los microfrontends?
+4. ¿Qué impacto tiene cada enfoque en el despliegue independiente de los microfrontends?
 5. ¿Qué estrategia degrada peor a medio y largo plazo, incluso si funciona inicialmente?
 
 Si al finalizar la PoC estas preguntas no pueden responderse con claridad, la PoC debe considerarse fallida.

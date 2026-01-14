@@ -17,7 +17,7 @@ This PoC exists to answer, with technical evidence and critical analysis, the fo
 1. Is it viable to decouple Angular Material theming from the host without introducing hacks or brittle dependencies?
 2. Where does coupling between host and microfrontends actually appear for each strategy?
 3. Who exercises design authority and how does that power manifest technically?
-4. What impact does each approach have on independent versioning and deployment of microfrontends?
+4. What impact does each approach have on independent deployment of microfrontends?
 5. Which strategy degrades worse in the medium and long term, even if it initially works?
 
 If these questions cannot be answered clearly by the end of the PoC, the PoC should be considered unsuccessful.
