@@ -1,21 +1,12 @@
 /**
  * MFE-B Base Layout Styles
- * 
- * THIS is where the Angular Material theme must be applied for MFEs loaded via Native Federation.
- * 
+ *
+ * This is where the Angular Material theme is applied for MFEs loaded via Native Federation.
+ *
  * WHY HERE AND NOT IN styles.scss?
  * - Global styles.scss is ignored when MFE is loaded remotely
  * - Component styleUrls ARE processed and injected
  * - This is the ONLY way to ensure theme CSS is present at runtime
- * 
- * PATTERN:
- * - _theme.scss defines palettes and exports a mixin (apply-theme)
- * - This layout imports the theme and calls the mixin
- * - The mixin executes mat.core() and mat.all-component-themes()
- * 
- * TRADEOFF:
- * - More verbose (every routed component needs this layout wrapper)
- * - But it works reliably with Native Federation
  */
 
 @use '../../styles/themes/theme' as theme;
@@ -24,20 +15,19 @@
 @include theme.apply-theme();
 
 .mfe-b-layout {
-  /* Layout wrapper - transparent container */
   display: contents;
 }
 
-/* MFE-B runtime indicator - proves theme loaded */
+/* MFE-B runtime indicator */
 .mfe-b-layout::before {
-  content: 'MFE-B: Deep Slate Blue theme (via Layout)';
+  content: 'MFE-B';
   position: fixed;
-  bottom: 0;
-  right: 0;
-  padding: 4px 8px;
-  background: #334155;
-  color: white;
-  font-size: 10px;
+  bottom: var(--ds-spacing-0);
+  right: var(--ds-spacing-0);
+  padding: var(--ds-spacing-1) var(--ds-spacing-2);
+  background: var(--ds-color-base-neutral-700);
+  color: var(--ds-color-text-inverse);
+  font-size: var(--ds-font-size-xs);
   z-index: 9999;
   pointer-events: none;
 }

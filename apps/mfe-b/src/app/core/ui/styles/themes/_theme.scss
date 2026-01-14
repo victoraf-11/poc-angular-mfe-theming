@@ -1,190 +1,229 @@
 /**
- * MFE-B Local Angular Material Theme
- * EXPERIMENT 02 - Fully local theme per MFE
+ * MFE-B Angular Material Theme
+ * EXPERIMENT 03 - Theme compiled from Design Tokens with CSS Variables
  *
- * This microfrontend compiles its OWN Angular Material theme.
- * It does NOT depend on the shell for theming.
+ * This MFE compiles its Angular Material theme using CSS custom properties
+ * from the shared design-tokens library.
  *
- * CUSTOM PALETTE: "Deep Slate Blue" brand identity
- * Primary: Rich slate blue (#334155)
- * Accent: Bright cyan (#06b6d4)
+ * Token source: @org/design-tokens (CSS output via project.json styles array)
+ * NO hardcoded color values - all derived from CSS variables.
  *
- * CRITICAL: This is a DIFFERENT theme than mfe-a.
- * This maximizes visual contrast to expose global side effects.
+ * MFE-B uses the SAME tokens as MFE-A, demonstrating:
+ * - Consistent design language across microfrontends
+ * - Single source of truth for colors
+ * - No drift between MFE visual styles
  *
- * ARCHITECTURAL OBSERVATIONS:
- * 1. When mfe-b loads AFTER mfe-a:
- *    - MFE-B's :root variables overwrite mfe-a's variables
- *    - All Material components adopt mfe-b's color scheme
- *
- * 2. When mfe-b loads BEFORE mfe-a:
- *    - MFE-A's theme wins instead
- *    - The MFE that loads LAST controls the ENTIRE document's theme
- *
- * 3. This proves that Angular Material themes are DOCUMENT-GLOBAL,
- *    not component-scoped.
+ * ARCHITECTURAL NOTES:
+ * - CSS tokens loaded via project.json styles array for standalone mode
+ * - When loaded via Native Federation, styles array is ignored (shell provides tokens)
+ * - Both MFEs use identical CSS variables
+ * - Theme is truly self-contained: works standalone AND as remote MFE
+ * - No duplication: tokens.css only included when running standalone
  */
 
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 // ============================================================================
-// CUSTOM PALETTE: "Deep Slate Blue" - MFE-B Brand Identity
-// These are NOT Material predefined palettes - they represent a custom brand
+// PALETTE GENERATION FROM DESIGN TOKENS (CSS Variables)
+// Same palettes as MFE-A - ensuring visual consistency
 // ============================================================================
 
-$deep-slate-palette: (
-  50: #f8fafc,
-  100: #f1f5f9,
-  200: #e2e8f0,
-  300: #cbd5e1,
-  400: #94a3b8,
-  500: #334155,
-  // Primary brand color - slate blue
-  600: #475569,
-  700: #1e293b,
-  800: #0f172a,
-  900: #020617,
-  A100: #cbd5e1,
-  A200: #94a3b8,
-  A400: #334155,
-  A700: #1e293b,
+/**
+ * Primary Palette - Navy (from CSS tokens)
+ */
+$primary-palette: (
+  50: var(--ds-color-base-navy-50),
+  100: var(--ds-color-base-navy-100),
+  200: var(--ds-color-base-navy-200),
+  300: var(--ds-color-base-navy-300),
+  400: var(--ds-color-base-navy-400),
+  500: var(--ds-color-base-navy-500),
+  600: var(--ds-color-base-navy-600),
+  700: var(--ds-color-base-navy-700),
+  800: var(--ds-color-base-navy-800),
+  900: var(--ds-color-base-navy-900),
+  A100: var(--ds-color-base-navy-100),
+  A200: var(--ds-color-base-navy-200),
+  A400: var(--ds-color-base-navy-400),
+  A700: var(--ds-color-base-navy-700),
   contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #ffffff,
-    A700: #ffffff,
+    50: var(--ds-color-base-neutral-900),
+    100: var(--ds-color-base-neutral-900),
+    200: var(--ds-color-base-neutral-900),
+    300: var(--ds-color-base-neutral-900),
+    400: var(--ds-color-base-neutral-0),
+    500: var(--ds-color-base-neutral-0),
+    600: var(--ds-color-base-neutral-0),
+    700: var(--ds-color-base-neutral-0),
+    800: var(--ds-color-base-neutral-0),
+    900: var(--ds-color-base-neutral-0),
+    A100: var(--ds-color-base-neutral-900),
+    A200: var(--ds-color-base-neutral-900),
+    A400: var(--ds-color-base-neutral-0),
+    A700: var(--ds-color-base-neutral-0),
   ),
 );
 
-$bright-cyan-palette: (
-  50: #ecfeff,
-  100: #cffafe,
-  200: #a5f3fc,
-  300: #67e8f9,
-  400: #22d3ee,
-  500: #06b6d4,
-  // Accent brand color - cyan
-  600: #0891b2,
-  700: #0e7490,
-  800: #155e75,
-  900: #164e63,
-  A100: #67e8f9,
-  A200: #22d3ee,
-  A400: #06b6d4,
-  A700: #0e7490,
+/**
+ * Accent Palette - Teal (from CSS tokens)
+ */
+$accent-palette: (
+  50: var(--ds-color-base-teal-50),
+  100: var(--ds-color-base-teal-100),
+  200: var(--ds-color-base-teal-200),
+  300: var(--ds-color-base-teal-300),
+  400: var(--ds-color-base-teal-400),
+  500: var(--ds-color-base-teal-500),
+  600: var(--ds-color-base-teal-600),
+  700: var(--ds-color-base-teal-700),
+  800: var(--ds-color-base-teal-800),
+  900: var(--ds-color-base-teal-900),
+  A100: var(--ds-color-base-teal-100),
+  A200: var(--ds-color-base-teal-200),
+  A400: var(--ds-color-base-teal-400),
+  A700: var(--ds-color-base-teal-700),
   contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #000000,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #ffffff,
-    A700: #ffffff,
+    50: var(--ds-color-base-neutral-900),
+    100: var(--ds-color-base-neutral-900),
+    200: var(--ds-color-base-neutral-900),
+    300: var(--ds-color-base-neutral-900),
+    400: var(--ds-color-base-neutral-900),
+    500: var(--ds-color-base-neutral-0),
+    600: var(--ds-color-base-neutral-0),
+    700: var(--ds-color-base-neutral-0),
+    800: var(--ds-color-base-neutral-0),
+    900: var(--ds-color-base-neutral-0),
+    A100: var(--ds-color-base-neutral-900),
+    A200: var(--ds-color-base-neutral-900),
+    A400: var(--ds-color-base-neutral-900),
+    A700: var(--ds-color-base-neutral-0),
   ),
 );
 
-$custom-warn-palette: (
-  50: #fffbeb,
-  100: #fef3c7,
-  200: #fde68a,
-  300: #fcd34d,
-  400: #fbbf24,
-  500: #f59e0b,
-  // Custom warn - amber
-  600: #d97706,
-  700: #b45309,
-  800: #92400e,
-  900: #78350f,
-  A100: #fde68a,
-  A200: #fcd34d,
-  A400: #f59e0b,
-  A700: #b45309,
+/**
+ * Warn Palette - Red (from CSS tokens)
+ */
+$warn-palette: (
+  50: var(--ds-color-base-red-50),
+  100: var(--ds-color-base-red-100),
+  200: var(--ds-color-base-red-200),
+  300: var(--ds-color-base-red-300),
+  400: var(--ds-color-base-red-400),
+  500: var(--ds-color-base-red-500),
+  600: var(--ds-color-base-red-600),
+  700: var(--ds-color-base-red-700),
+  800: var(--ds-color-base-red-800),
+  900: var(--ds-color-base-red-900),
+  A100: var(--ds-color-base-red-100),
+  A200: var(--ds-color-base-red-200),
+  A400: var(--ds-color-base-red-400),
+  A700: var(--ds-color-base-red-700),
   contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #000000,
-    600: #000000,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #ffffff,
+    50: var(--ds-color-base-neutral-900),
+    100: var(--ds-color-base-neutral-900),
+    200: var(--ds-color-base-neutral-900),
+    300: var(--ds-color-base-neutral-900),
+    400: var(--ds-color-base-neutral-0),
+    500: var(--ds-color-base-neutral-0),
+    600: var(--ds-color-base-neutral-0),
+    700: var(--ds-color-base-neutral-0),
+    800: var(--ds-color-base-neutral-0),
+    900: var(--ds-color-base-neutral-0),
+    A100: var(--ds-color-base-neutral-900),
+    A200: var(--ds-color-base-neutral-0),
+    A400: var(--ds-color-base-neutral-0),
+    A700: var(--ds-color-base-neutral-0),
   ),
 );
 
-// Custom brand palettes - NOT Material predefined
-$primary-palette: mat.define-palette($deep-slate-palette, 500, 100, 900);
-$accent-palette: mat.define-palette($bright-cyan-palette, 500, 100, 900);
-$warn-palette: mat.define-palette($custom-warn-palette, 500, 100, 900);
+// Define Material palettes
+$mat-primary: mat.define-palette($primary-palette, 900, 500, 900);
+$mat-accent: mat.define-palette($accent-palette, 500, 300, 700);
+$mat-warn: mat.define-palette($warn-palette, 500, 300, 700);
 
-// Define theme for MFE-B
+// ============================================================================
+// THEME DEFINITION
+// ============================================================================
+
 $mfe-b-theme: mat.define-light-theme(
   (
     color: (
-      primary: $primary-palette,
-      accent: $accent-palette,
-      warn: $warn-palette,
+      primary: $mat-primary,
+      accent: $mat-accent,
+      warn: $mat-warn,
     ),
     typography: mat.define-typography-config(
-        $font-family: '"Segoe UI", Roboto, sans-serif',
-        $headline-1: mat.define-typography-level(36px, 44px, 600),
-        $body-1: mat.define-typography-level(15px, 22px, 400),
+      $font-family: var(--ds-font-family-sans),
+      $headline-1: mat.define-typography-level(
+        var(--ds-font-size-4xl),
+        var(--ds-font-line-height-tight),
+        var(--ds-font-weight-bold)
       ),
-    density: -1,
-    // Slightly denser than mfe-a to show density conflicts
+      $headline-2: mat.define-typography-level(
+        var(--ds-font-size-3xl),
+        var(--ds-font-line-height-tight),
+        var(--ds-font-weight-bold)
+      ),
+      $headline-3: mat.define-typography-level(
+        var(--ds-font-size-2xl),
+        var(--ds-font-line-height-snug),
+        var(--ds-font-weight-medium)
+      ),
+      $headline-4: mat.define-typography-level(
+        var(--ds-font-size-xl),
+        var(--ds-font-line-height-snug),
+        var(--ds-font-weight-medium)
+      ),
+      $headline-5: mat.define-typography-level(
+        var(--ds-font-size-lg),
+        var(--ds-font-line-height-normal),
+        var(--ds-font-weight-medium)
+      ),
+      $headline-6: mat.define-typography-level(
+        var(--ds-font-size-base),
+        var(--ds-font-line-height-normal),
+        var(--ds-font-weight-medium)
+      ),
+      $body-1: mat.define-typography-level(
+        var(--ds-font-size-base),
+        var(--ds-font-line-height-relaxed),
+        var(--ds-font-weight-regular)
+      ),
+      $body-2: mat.define-typography-level(
+        var(--ds-font-size-sm),
+        var(--ds-font-line-height-normal),
+        var(--ds-font-weight-regular)
+      ),
+      $caption: mat.define-typography-level(
+        var(--ds-font-size-xs),
+        var(--ds-font-line-height-normal),
+        var(--ds-font-weight-regular)
+      ),
+      $button: mat.define-typography-level(
+        var(--ds-font-size-sm),
+        var(--ds-font-line-height-none),
+        var(--ds-font-weight-medium)
+      ),
+    ),
+    density: 0,
   )
 );
 
 // ============================================================================
 // THEME APPLICATION MIXIN
 // ============================================================================
+
 /**
- * This mixin encapsulates the theme application logic.
- * It must be called from a component's styleUrl (e.g., base.layout.scss)
- * because global styles.scss is IGNORED when MFE is loaded via Native Federation.
+ * Apply theme mixin - to be called from component styles.
  *
- * GLOBAL SIDE EFFECTS - DUPLICATE GENERATION:
+ * IMPORTANT: This generates global CSS. When loaded via Native Federation,
+ * component styleUrls are processed, but global styles.scss is not.
+ * Therefore, this mixin should be called from BaseLayoutComponent styles.
  *
- * mat.core() will generate the SAME global CDK styles that mfe-a generates.
- * This results in:
- * - Duplicate CSS in the document
- * - Increased bundle size
- * - Last-loaded styles winning
- *
- * MFE-B THEME GLOBAL SIDE EFFECTS:
- *
- * mat.all-component-themes() generates:
- * - Background colors for .mat-app-background
- * - Text colors for contrast
- * - Elevation shadows
- * - Form field fill colors
- *
- * When this loads AFTER mfe-a:
- * - The ENTIRE document adopts mfe-b's theme
- * - mfe-a's components will ALSO use mfe-b's colors
- * - There is no scoping mechanism
+ * GLOBAL SIDE EFFECTS (unavoidable with Angular Material):
+ * - mat.core(): CDK overlay, a11y, ripple styles
+ * - mat.all-component-themes(): Material component styles, :root CSS vars
  */
 @mixin apply-theme() {
   @include mat.core();

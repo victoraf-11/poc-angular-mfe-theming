@@ -38,7 +38,10 @@
         "tsConfig": "apps/mfe-b/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/mfe-b/src/favicon.ico", "apps/mfe-b/src/assets"],
-        "styles": ["apps/mfe-b/src/styles.scss"],
+        "styles": [
+          "node_modules/@org/design-tokens/src/lib/build/css/tokens.css",
+          "apps/mfe-b/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
