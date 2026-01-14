@@ -35,10 +35,11 @@ Cada experimento contará con un documento independiente con la siguiente estruc
 
 ### Experimento 2 — Theme completamente local por MFE
 
-* **Documento**: [02-local-theme-per-mfe.md](02-local-theme-per-mfe.md)
+* **Documento**: [02-local-theme-per-mfe-esp.md](02-local-theme-per-mfe-esp.md)
 * **Objetivo**: validar aislamiento real y coexistencia
 
-### Experimento 3 — Tokens compartidos + theme local
+### Experimento 3 — Tokens compartidos + theme local (✅ RECOMENDADO)
 
-* **Documento**: [03-shared-design-tokens-with-local-themes.md](03-shared-design-tokens-with-local-themes.md)
+* **Documento**: [03-shared-design-tokens-with-local-themes-esp.md](03-shared-design-tokens-with-local-themes-esp.md)
 * **Objetivo**: evaluar equilibrio entre consistencia y autonomía
+* **Resultado**: ✅ **Arquitectura production-ready** - combina autonomía real de MFEs con consistencia visual garantizada mediante design tokens compartidos compilados a CSS variables

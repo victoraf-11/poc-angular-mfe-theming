@@ -38,7 +38,8 @@ Each experiment will have an independent document with the following minimum str
 * **Document**: [02-local-theme-per-mfe.md](02-local-theme-per-mfe.md)
 * **Goal**: validate true isolation and coexistence
 
-### Experiment 3 — Shared tokens + local theme
+### Experiment 3 — Shared tokens + local theme (✅ RECOMMENDED)
 
 * **Document**: [03-shared-design-tokens-with-local-themes.md](03-shared-design-tokens-with-local-themes.md)
 * **Goal**: evaluate the balance between consistency and autonomy
+* **Result**: ✅ **Production-ready architecture** - combines true MFE autonomy with guaranteed visual consistency through shared design tokens compiled to CSS variables
