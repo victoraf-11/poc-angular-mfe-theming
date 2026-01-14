@@ -81,19 +81,6 @@ El shell **asume autoridad total** sobre el aspecto visual de la aplicación.
 
 ---
 
-### Cambio 2 — Versión distinta de Angular Material en un mfe
-
-- Un mfe actualiza Angular Material a una versión distinta.
-- El shell mantiene su versión original.
-
-**Resultado observado** (dependiendo del caso concreto):
-
-- Errores de build o runtime.
-- Comportamientos visuales inconsistentes.
-- Dificultad para aislar la causa del problema (¿shell o mfe?).
-
----
-
 ## Observaciones
 
 ### Dependencias implícitas detectadas

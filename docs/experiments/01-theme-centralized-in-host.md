@@ -126,18 +126,6 @@ export class RootPage {
 
 ---
 
-### Change 2 — Different Angular Material version in an mfe
-
-- An mfe updates Angular Material to a different version while the shell keeps its original version.
-
-**Observed results** (case-dependent):
-
-- Build or runtime errors.
-- Visual inconsistencies.
-- Difficulty determining the root cause (shell or mfe?).
-
----
-
 ## Observations
 
 ### Implicit dependencies detected
