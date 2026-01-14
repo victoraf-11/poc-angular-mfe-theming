@@ -1,5 +1,10 @@
 # PoC — Theming en Microfrontends Angular
 
+> **Rama definitiva:** `baseline/mfe-theming-with-shared-design-tokens`  
+> Esta rama contiene toda la documentación de los experimentos realizados y el proyecto reproducible con la solución elegida.
+
+---
+
 ## 1. Propósito de esta PoC
 
 Esta Proof of Concept (PoC) **no pretende validar una implementación funcional**, sino servir como **instrumento de decisión arquitectónica** sobre cómo abordar el theming en una arquitectura de microfrontends Angular utilizando Angular Material.
