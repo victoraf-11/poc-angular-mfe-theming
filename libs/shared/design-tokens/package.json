@@ -1,0 +1,37 @@
+{
+  "name": "@org/design-tokens",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "peerDependencies": {
+    "style-dictionary": "^5.1.4"
+  },
+  "dependencies": {},
+  "exports": {
+    ".": {
+      "import": "./src/lib/build/js/tokens.js",
+      "types": "./src/lib/build/js/tokens.d.ts"
+    },
+    "./js": {
+      "import": "./src/lib/build/js/tokens.js",
+      "types": "./src/lib/build/js/tokens.d.ts"
+    },
+    "./js/nested": {
+      "import": "./src/lib/build/js/tokens-nested.js"
+    },
+    "./css": "./src/lib/build/css/tokens.css",
+    "./css/tokens.css": "./src/lib/build/css/tokens.css",
+    "./scss": "./src/lib/build/scss/_index.scss",
+    "./scss/tokens": "./src/lib/build/scss/_tokens.scss",
+    "./scss/variables": "./src/lib/build/scss/_tokens.scss",
+    "./scss/map": "./src/lib/build/scss/_tokens-map.scss",
+    "./json": "./src/lib/build/json/tokens.json",
+    "./json/nested": "./src/lib/build/json/tokens-nested.json"
+  },
+  "main": "./src/lib/build/js/tokens.js",
+  "types": "./src/lib/build/js/tokens.d.ts",
+  "files": [
+    "src/lib/build"
+  ]
+}

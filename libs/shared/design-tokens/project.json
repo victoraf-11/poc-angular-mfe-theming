@@ -1,0 +1,40 @@
+{
+  "name": "design-tokens",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/design-tokens/src",
+  "projectType": "library",
+  "targets": {
+    "build-tokens": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/src/lib/build"],
+      "options": {
+        "command": "node style-dictionary.config.js",
+        "cwd": "libs/shared/design-tokens"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build-tokens"],
+      "outputs": ["{workspaceRoot}/dist/libs/design-tokens"],
+      "options": {
+        "commands": [
+          "mkdir -p dist/libs/design-tokens",
+          "cp -r libs/shared/design-tokens/src/lib/build/* dist/libs/design-tokens/",
+          "cp libs/shared/design-tokens/package.json dist/libs/design-tokens/",
+          "cp libs/shared/design-tokens/README.md dist/libs/design-tokens/ 2>/dev/null || true"
+        ],
+        "parallel": false
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf libs/shared/design-tokens/src/lib/build",
+          "rm -rf dist/libs/design-tokens"
+        ]
+      }
+    }
+  },
+  "tags": ["type:tokens", "scope:shared"]
+}
