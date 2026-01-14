@@ -1,41 +1,86 @@
 /**
- * EXPERIMENT 02 - Shell styles
+ * Shell Global Styles with Design Tokens
  *
- * CRITICAL: The shell MUST NOT:
- * - Define any Angular Material theme
- * - Import @angular/material/theming
- * - Use mat.core() or mat.all-component-themes()
- * - Provide any global Material styles
- *
- * The shell acts purely as an orchestrator.
- * Each MFE is responsible for its own Material theme.
- *
- * EXPECTED CONSEQUENCE:
- * When MFEs are loaded, EACH will inject its own compiled Material CSS
- * into the global DOM. This creates CSS conflicts because Angular Material
- * generates global styles that cannot be scoped.
+ * CSS tokens are loaded via project.json styles array.
+ * The shell does NOT use Angular Material.
  */
 
-/* Minimal reset - NO Material theming */
+/* Reset */
 *,
 ::before,
 ::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  border-width: 0;
+  border-style: solid;
+  border-color: currentColor;
 }
 
-html,
+html {
+  -webkit-text-size-adjust: 100%;
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-base);
+  line-height: var(--ds-font-line-height-normal);
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
 body {
   height: 100%;
   margin: 0;
-  /* Using system fonts - NOT Roboto to prove shell has no Material influence */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: inherit;
+  line-height: inherit;
+  color: var(--ds-color-text-primary);
+  background-color: var(--ds-color-background-default);
   overflow-y: scroll;
 }
 
-body {
-  /* Neutral background - NOT Material themed */
-  background: #f5f5f5;
-  color: #333;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+pre {
+  font-family: var(--ds-font-family-mono);
+  background-color: var(--ds-color-base-neutral-700);
+  border-radius: var(--ds-border-radius-base);
+  color: var(--ds-color-base-neutral-200);
+  overflow: auto;
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+}
+
+svg {
+  display: block;
+  vertical-align: middle;
+  shape-rendering: auto;
+  text-rendering: optimizeLegibility;
+}
+
+/* Utility classes */
+.shadow {
+  box-shadow: var(--ds-elevation-3);
+}
+
+.rounded {
+  border-radius: var(--ds-border-radius-xl);
 }

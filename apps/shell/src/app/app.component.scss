@@ -5,12 +5,16 @@
 
 .main-content {
   min-height: calc(100vh - 70px);
-  padding: 2rem;
-  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: var(--ds-spacing-8);
+  background: linear-gradient(
+    180deg,
+    var(--ds-color-background-paper) 0%,
+    var(--ds-color-background-subtle) 100%
+  );
 }
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 1rem;
+    padding: var(--ds-spacing-4);
   }
 }
