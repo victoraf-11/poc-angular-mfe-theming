@@ -391,15 +391,6 @@ There is no strong technical coupling, but there is **fragmentation**.
 | Density conflicts | Medium | Certain | Standardize density |
 | Typography conflicts | Medium | Certain | Avoid `mat.core()` typography |
 
-### Organizational risks
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Lack of visual consistency between mfes | Product identity dilution | Design governance |
-| Absence of design governance | UX fragmentation | Cross-team coordination |
-| Difficulty evolving towards a common identity | Technical debt | Shared token system |
-| Load order becomes deployment concern | DevOps complexity | Orchestration layer |
-
 ---
 
 ## Experiment conclusion
