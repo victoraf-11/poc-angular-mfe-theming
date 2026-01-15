@@ -102,12 +102,13 @@ The repository structure is designed to control variables, not to simulate produ
 
 ```
 /apps
-  /host
+  /shell
   /mfe-a
   /mfe-b
 
-/packages
-  /tokens
+/libs
+  /shared
+    /design-tokens
 
 /docs
   README.md
@@ -117,7 +118,7 @@ The repository structure is designed to control variables, not to simulate produ
 
 Key notes:
 
-- `packages/tokens` is not an Angular library.
+- `libs/shared/design-tokens` is a shared design tokens library.
 - Microfrontends do not share code among themselves.
 - The monorepo is a methodological artifact, not a production architecture recommendation.
 
