@@ -102,12 +102,13 @@ La estructura del repositorio está diseñada para **controlar variables**, no p
 
 ```
 /apps
-  /host
+  /shell
   /mfe-a
   /mfe-b
 
-/packages
-  /tokens
+/libs
+  /shared
+    /design-tokens
 
 /docs
   README.md
@@ -117,7 +118,7 @@ La estructura del repositorio está diseñada para **controlar variables**, no p
 
 Notas clave:
 
-* `packages/tokens` **no es una librería Angular**.
+* `libs/shared/design-tokens` **es una librería compartida de tokens de diseño**.
 * Los microfrontends no comparten código entre sí.
 * El monorepo es un **artefacto metodológico**, no una recomendación de arquitectura productiva.
 
