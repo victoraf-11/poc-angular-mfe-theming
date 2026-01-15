@@ -253,6 +253,15 @@ Angular Material introduce efectos globales incluso cuando el theme es "local":
 **Hallazgo crítico:** El theme del ÚLTIMO MFE cargado gana para el documento COMPLETO.
 No existe mecanismo de scoping para el CSS global de Angular Material.
 
+> **⚠️ Nota importante sobre el contexto de este problema:**
+>
+> Este comportamiento de "el último gana" ocurre principalmente en el escenario donde **múltiples MFEs se cargan simultáneamente** en la misma vista. En arquitecturas donde los MFEs se cargan mediante **navegación por rutas** (como es nuestro caso), el problema se mitiga significativamente: cada navegación a un MFE diferente sobrescribe los estilos del MFE anterior, resultando en que cada MFE muestra correctamente su propio theme mientras está activo.
+>
+> Sin embargo, es importante entender que:
+> - Los estilos **se acumulan** en el DOM (no se eliminan al navegar)
+> - Si existiera una vista que cargue múltiples MFEs simultáneamente, el problema reaparecería
+> - Los **overlays** (diálogos, menús) siempre usan el theme del último MFE cargado, independientemente de qué MFE los originó
+
 ---
 
 ## Observaciones clave

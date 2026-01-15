@@ -253,6 +253,15 @@ Angular Material introduces global effects even when the theme is "local":
 **Critical finding:** The last-loaded MFE's theme wins for the ENTIRE document.
 There is no scoping mechanism for Angular Material's global CSS.
 
+> **⚠️ Important note about when this problem occurs:**
+>
+> This "last one wins" behavior primarily occurs in scenarios where **multiple MFEs are loaded simultaneously** in the same view. In architectures where MFEs are loaded via **route-based navigation** (as in our case), the problem is significantly mitigated: each navigation to a different MFE overwrites the previous MFE's styles, resulting in each MFE correctly displaying its own theme while active.
+>
+> However, it's important to understand that:
+> - Styles **accumulate** in the DOM (they are not removed when navigating)
+> - If there were a view that loads multiple MFEs simultaneously, the problem would resurface
+> - **Overlays** (dialogs, menus) always use the theme of the last-loaded MFE, regardless of which MFE originated them
+
 ---
 
 ## Key observations
