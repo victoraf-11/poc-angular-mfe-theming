@@ -391,16 +391,6 @@ No hay acoplamiento técnico fuerte, pero sí **fragmentación**.
 | Conflictos de densidad | MEDIA | Cierta | Todos los componentes adoptan la última densidad cargada |
 | Colisiones de tipografía | MEDIA | Cierta | Tamaños/familias de fuentes cambian globalmente |
 
-### Riesgos organizativos
-
-| Riesgo | Impacto | Descripción |
-|--------|---------|-------------|
-| No determinismo visual | ALTO | QA no puede verificar apariencia consistente |
-| Orden de carga como preocupación de deployment | ALTO | DevOps debe controlar secuencia de carga de MFEs |
-| Sin gobernanza de diseño | MEDIO | Los equipos derivan visualmente sin coordinación |
-| Complejidad de debugging | MEDIO | Los bugs de theme dependen de qué MFE cargó último |
-| Regresión de performance | BAJO | La hinchazón de CSS aumenta peso de página |
-
 ---
 
 ## Conclusión del experimento
